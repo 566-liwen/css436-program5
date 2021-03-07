@@ -1,11 +1,9 @@
-package com.css436.program4.model;
+package com.css436.program5.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 @DynamoDBTable(tableName = "persons")
 public class Person implements Serializable {
@@ -18,15 +16,6 @@ public class Person implements Serializable {
 
     private LinkedHashMap<String, String> information;
 
-    //@DynamoDBHashKey(attributeName = "name")
-    //@DynamoDBRangeKey(attributeName = "name")
-    //@DynamoDBAttribute
-
-//    public Person(String name, String firstName, String lastName) {
-//        this.name = name;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//    }
     public Person(){}
 
     public Person(String firstName, String lastName) {
@@ -34,15 +23,6 @@ public class Person implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-//    @DynamoDBHashKey(attributeName = "name")
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
 
     @DynamoDBHashKey(attributeName = "firstName")
     public String getFirstName() {

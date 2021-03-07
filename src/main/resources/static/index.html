@@ -2,34 +2,51 @@
 <html lang="en">
 <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="./js/test.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
     <link rel="stylesheet" href="./css/main.css">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-
-    <div class="centered">
-        <div>
-            <h3>CSS 436: Cloud Computing  |  Program 4: Website + Storage</h3>
-            <h2>Liwen Fan</h2>
-            <p style="color:red">[case sensitive for the query]</p>
+    <div>
+        <h3>Movieeeee</h3>
+        <div id="main">
+            <div id="banner">
+                <p id="banner_loading">loading Banner...</p>
+            </div>
+            <br>
+            <div id="movies_list">
+                <p id="movies_list_loading">loading Main Page...</p>
+            </div>
         </div>
-        <div>
-            <button id="loadData" onclick="loadData()">Load Data</button><br><br>
+        <div id="single" style="display: none">
+            <div id="movie_item">
+                <p id="movie_item_loading">loading Single Movie Information...</p>
+            </div>
         </div>
-        <div>
-            <button id="clearData" onclick="clearData();">Clear Data</button><br><br>
-        </div>
-        <div>
-            <label for="lastName">Last Name</label><br>
-            <input type="text" id="lastName" name="lastName"><br>
-            <label for="firstName">First Name</label><br>
-            <input type="text" id="firstName" name="firstName"><br><br>
-            <button id="query" onclick="getData();">Query</button>
-        </div>
-        <div id="status"></div>
-        <div id="infoTable"></div>
     </div>
+
+<!--    <div class="centered">-->
+<!--        <div>-->
+<!--            <h3>CSS 436: Cloud Computing  |  Program 4: Website + Storage</h3>-->
+<!--            <h2>Liwen Fan</h2>-->
+<!--            <p style="color:red">[case sensitive for the query]</p>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <button id="loadData" onclick="loadData()">Load Data</button><br><br>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <button id="clearData" onclick="clearData();">Clear Data</button><br><br>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label for="lastName">Last Name</label><br>-->
+<!--            <input type="text" id="lastName" name="lastName"><br>-->
+<!--            <label for="firstName">First Name</label><br>-->
+<!--            <input type="text" id="firstName" name="firstName"><br><br>-->
+<!--            <button id="query" onclick="getData();">Query</button>-->
+<!--        </div>-->
+<!--        <div id="status"></div>-->
+<!--        <div id="infoTable"></div>-->
+<!--    </div>-->
 </body>
 </html>
