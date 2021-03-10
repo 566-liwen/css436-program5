@@ -2,14 +2,20 @@ package com.css436.program5.repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
+import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.css436.program5.model.Movie;
 import com.css436.program5.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class MainRepository {
@@ -28,6 +34,10 @@ public class MainRepository {
 
     public Movie getMovieByName(String name) {
         return mapper.load(Movie.class, name);
+    }
+
+    public void updateMovie(Movie movie) {
+        mapper.save(movie, buildExpression(movie));
     }
 
 //    public Person getPerson(String firstName, String lastName){
@@ -77,13 +87,13 @@ public class MainRepository {
 //        mapper.save(person, buildExpression(person));
 //    }
 
-//    public DynamoDBSaveExpression buildExpression(Person person) {
-//        DynamoDBSaveExpression saveExpression = new DynamoDBSaveExpression();
-//        Map<String, ExpectedAttributeValue> expected = new HashMap<>();
-//        expected.put("name", new ExpectedAttributeValue(new AttributeValue(person.getName()))
-//                .withComparisonOperator(ComparisonOperator.EQ)
-//        );
-//        saveExpression.setExpected(expected);
-//        return saveExpression;
-//    }
+    public DynamoDBSaveExpression buildExpression(Movie movie) {
+        DynamoDBSaveExpression saveExpression = new DynamoDBSaveExpression();
+        Map<String, ExpectedAttributeValue> expected = new HashMap<>();
+        expected.put("name", new ExpectedAttributeValue(new AttributeValue(movie.getTitle()))
+                .withComparisonOperator(ComparisonOperator.EQ)
+        );
+        saveExpression.setExpected(expected);
+        return saveExpression;
+    }
 }

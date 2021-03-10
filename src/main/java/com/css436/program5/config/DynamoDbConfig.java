@@ -24,9 +24,16 @@ public class DynamoDbConfig {
     @Value("${amazon.end-point.url}")
     private String awsDynamoDBEndPoint;
 
+    @Value("${tmdb.api.key}")
+    private String tmdbKey;
+
+    @Value("${movie.params.year")
+    private String movieYear;
+
     @Bean
     public DynamoDBMapper mapper(){
-        return new DynamoDBMapper(amazonDynamoDBConfig());
+        DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDBConfig());
+        return mapper;
     }
 
     public AmazonDynamoDB amazonDynamoDBConfig(){

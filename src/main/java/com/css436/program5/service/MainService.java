@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.css436.program5.model.Movie;
 import com.css436.program5.model.Person;
+import com.css436.program5.model.Review;
 import com.css436.program5.repository.MainRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -41,7 +44,13 @@ public class MainService {
     }
 
     public Movie getMovieByName(String name) {
+        //logic
         return repository.getMovieByName(name);
+    }
+
+    public Movie updateMovieWithReview(Movie movie){
+        repository.updateMovie(movie);
+        return movie;
     }
 
 //    public List<Person> getPersonsByFilter(String firstName, String lastName) {
