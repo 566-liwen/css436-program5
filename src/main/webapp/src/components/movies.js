@@ -8,8 +8,26 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { withRouter, Link } from 'react-router-dom'
+import { withStyles } from '@material-ui/styles';
 
 import apiConfig from './apiConfig'
+
+const styles = theme => ({
+  root: {
+    minWidth: 275,
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+});
 
 class Movies extends React.Component{
     constructor(props) {
@@ -32,19 +50,20 @@ class Movies extends React.Component{
     }
 
     render() {
+        const { classes } = this.props;
         const movies = this.state.movies;
         return (
             <GridList cellHeight={160}  cols={3}>
               {movies.map((movie) => (
-                <Card key={movie.name}>
-                    <Link to={'movies/' + movie.name}>
+                <Card className={classes.root} key={movie.title}>
+                    <Link to={'movies/' + encodeURIComponent(movie.title)}>
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="h2">
-                            {movie.name}
+                            {movie.title}
                           </Typography>
                           <Typography variant="body2" color="textSecondary" component="p">
-                            {movie.description}
+                            {movie.overview}
                           </Typography>
                         </CardContent>
                       </CardActionArea>
@@ -56,4 +75,4 @@ class Movies extends React.Component{
     }
 }
 
-export default withRouter(Movies);
+export default withStyles(styles)(withRouter(Movies));

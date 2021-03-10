@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 //@CrossOrigin(origins = "http://ec2-52-42-101-9.us-west-2.compute.amazonaws.com:5000")
@@ -22,7 +23,7 @@ public class MainController {
     @GetMapping
     public ResponseEntity<List<Movie>> getMovies() {
         List<Movie> movies = service.getMovies();
-        System.out.println(movies.get(0).getName());
+        System.out.println(movies.get(0).getTitle());
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
@@ -30,6 +31,12 @@ public class MainController {
     public ResponseEntity<Movie> getMovieByName(@PathVariable String name) {
         Movie movie = service.getMovieByName(name);
         return new ResponseEntity<>(movie, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/reviews")
+    public ResponseEntity<Movie> saveReview(@RequestBody Movie movie) {
+        Movie updatedMovie = service.updateMovieWithReview(movie);
+        return new ResponseEntity<>(updatedMovie, HttpStatus.OK);
     }
 
 //    @GetMapping
