@@ -1,14 +1,16 @@
 package com.css436.program5.service;
 
+import com.amazonaws.services.dynamodbv2.xspec.N;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.css436.program5.model.Movie;
-import com.css436.program5.model.Person;
-import com.css436.program5.model.Review;
+import com.css436.program5.model.*;
 import com.css436.program5.repository.MainRepository;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,9 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -32,11 +37,19 @@ public class MainService {
     @Value("${amazon.given.s3.url}")
     private String s3Url;
 
+    @Value("${nyt.base.url}")
+    private String nytBaseUrl;
+
+    @Value("${nyt.api.key}")
+    private String nytApiKey;
+
     @Autowired
     private AmazonS3 s3Client;
 
     @Autowired
     private MainRepository repository;
+
+    private static Set<Integer> badStatusCodes = new HashSet<Integer>(Arrays.asList(408, 425, 429, 500, 503, 504));
 
     public List<Movie> getMovies(){
         List<Movie> movies = repository.getMovies();
@@ -45,12 +58,87 @@ public class MainService {
 
     public Movie getMovieByName(String name) {
         //logic
+        name = name.replace("%3A", ":");
+        name = name.replace("%2C", ",");
         return repository.getMovieByName(name);
     }
 
     public Movie updateMovieWithReview(Movie movie){
         repository.updateMovie(movie);
         return movie;
+    }
+
+    public NytReview getNewYorkTimesReview(String name){
+        String url = makeNytExternalApiUrl(name);
+        HttpClient client = getClient();
+
+        HttpResponse<String> response;
+        int statusCode = 500;
+
+        HttpRequest.Builder builder = HttpRequest.newBuilder()
+                .uri(URI.create(url));
+        HttpRequest request = builder
+                .GET()
+                .build();
+        try {
+            response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
+            if(response!=null) {
+                statusCode = response.statusCode();
+            }
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Unable to get data sets from api.");
+            return null;
+        }
+        if(isBadStatusCode(statusCode)) {
+            System.out.println("Unable to get data sets from api.");
+            return null;
+        }
+        String rawData = response.body();
+        Gson gson = new Gson();
+        JsonObject rawReviewObj = gson.fromJson(rawData, JsonObject.class);
+        if(!rawReviewObj.has("results") || rawReviewObj.get("results").isJsonNull()) return null;
+        JsonArray results = rawReviewObj.get("results").getAsJsonArray();
+        if(results.size() == 0) return null ;
+        JsonObject rawSingleReviewObj = results.get(0).getAsJsonObject();
+        NytReview nytReview = new NytReview();
+        if(rawSingleReviewObj.has("byline")){
+            nytReview.setByline(rawSingleReviewObj.get("byline").getAsString());
+        }
+        if(rawSingleReviewObj.has("headline")){
+            nytReview.setHeadline(rawSingleReviewObj.get("headline").getAsString());
+        }
+        if(rawSingleReviewObj.has("summary_short")){
+            nytReview.setSummary(rawSingleReviewObj.get("summary_short").getAsString());
+        }
+        if(rawSingleReviewObj.has("publication_date")){
+            nytReview.setPublicationDate(rawSingleReviewObj.get("publication_date").getAsString());
+        }
+        if(rawSingleReviewObj.has("link") && rawSingleReviewObj.get("link").getAsJsonObject().has("url")){
+            nytReview.setUrl(rawSingleReviewObj.get("link").getAsJsonObject().get("url").getAsString());
+        }
+        return nytReview;
+    }
+
+    private String makeNytExternalApiUrl(String name){
+        StringBuilder builder = new StringBuilder();
+        builder.append(nytBaseUrl);
+        builder.append("?query=");
+        builder.append(name.replace(" ", "%20"));
+        builder.append("&");
+        builder.append("api-key=");
+        builder.append(nytApiKey);
+        return builder.toString().replace("%%", "%");
+    }
+
+    private boolean isBadStatusCode(int code) {
+        return badStatusCodes.contains(code);
+    }
+
+    private HttpClient getClient() {
+        HttpClient client = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.ALWAYS).build();
+        return client;
     }
 
 //    public List<Person> getPersonsByFilter(String firstName, String lastName) {

@@ -1,6 +1,7 @@
 package com.css436.program5.controller;
 
 import com.css436.program5.model.Movie;
+import com.css436.program5.model.NytReview;
 import com.css436.program5.model.Person;
 import com.css436.program5.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,6 @@ public class MainController {
     @GetMapping
     public ResponseEntity<List<Movie>> getMovies() {
         List<Movie> movies = service.getMovies();
-        System.out.println(movies.get(0).getTitle());
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
@@ -37,6 +37,12 @@ public class MainController {
     public ResponseEntity<Movie> saveReview(@RequestBody Movie movie) {
         Movie updatedMovie = service.updateMovieWithReview(movie);
         return new ResponseEntity<>(updatedMovie, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/nytimesreview/{name}")
+    public ResponseEntity<NytReview> getNewYorkTimesReview(@PathVariable String name) {
+        NytReview nytReview = service.getNewYorkTimesReview(name);
+        return new ResponseEntity<>(nytReview, HttpStatus.OK);
     }
 
 //    @GetMapping
