@@ -151,15 +151,15 @@ class Movies extends React.Component{
             <div className={classes.root}>
             <GridList className={classes.gridList}>
               {movies.map((movie) => (
-                <Card className={classes.card} key={movie.name}>
-                    <Link to={'movies/' + movie.name}>
+                <Card className={classes.card} key={movie.title}>
+                    <Link to={'movies/' + encodeURIComponent(movie.title)}>
                       <CardActionArea >
                         <CardContent >
                           <Typography gutterBottom variant="h5" component="h2">
-                            {movie.name}
+                            {movie.title}
                           </Typography>
                           <Typography variant="body2" color="textSecondary" component="p">
-                            {movie.description}
+                            {movie.overview}
                           </Typography>
                         </CardContent>
                       </CardActionArea>
