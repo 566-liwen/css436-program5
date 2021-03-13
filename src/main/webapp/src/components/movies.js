@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { withRouter, Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/styles'
@@ -24,66 +25,53 @@ const styles = theme => ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
+        alignContent: 'center',
+        height:"70vh",
     },
     gridList: {
-        width: '70vw',
+        width: '70%',
+        height: '50%',
         flexWrap: 'nowrap',
         display: 'flex',
         // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
         //transform: 'translateZ(0)',
         overflowY:'hidden',
         overflowX: 'scroll',
+        margin: "20px",
     },
     paper: {
-        textAlign: 'center'
+        //textAlign: 'center',
+
+
         /*padding: theme.spacing(1),
         ,
         color: theme.palette.text.secondary,*/
     },
     card: {
-        overflow: 'visible'
-    }
+        display: "flex",
+
+        overflow: 'visible',
+        minHeight:"300px",
+        minWidth:"200px",
+        justifyContent: 'center'
+
+
+    },
+    cardContent: {
+        display: "flex",
+        flex: "10 auto",
+    },
+    media: {
+        display: "flex",
+        //backgroundSize: "contain",
+        height: "140px",
+        width: "90px",
+        justifyContent: 'center',
+        //alignContent: 'center',
+
+    },
 });
 
-
-/*function FormRow() {
-
-        const movies = this.state.movies;
-        return (
-        <div>
-            {movies.map((movie) => (
-                <Grid item xs={4}>
-                   <Card key={movie.name}>
-                       <Link to={'movies/' + movie.title}>
-                         <CardActionArea>
-                           <CardContent>
-                             <Typography gutterBottom variant="h5" component="h2">
-                               {movie.name}
-                             </Typography>
-                             <Typography variant="body2" color="textSecondary" component="p">
-                               {movie.description}
-                             </Typography>
-                           </CardContent>
-                         </CardActionArea>
-                       </Link>
-                   </Card>
-                </Grid>
-            ))}
-        </div>
-
-          *//*<React.Fragment>
-            <Grid item xs={4}>
-              <Paper className={classes.paper}>item</Paper>
-            </Grid>
-            <Grid item xs={4}>
-              <Paper className={classes.paper}>item</Paper>
-            </Grid>
-            <Grid item xs={4}>
-              <Paper className={classes.paper}>item</Paper>
-            </Grid>
-          </React.Fragment>*//*
-        );
-    }*/
 
 
 class Movies extends React.Component{
@@ -154,13 +142,19 @@ class Movies extends React.Component{
                 <Card className={classes.card} key={movie.title}>
                     <Link to={'movies/' + encodeURIComponent(movie.title)}>
                       <CardActionArea >
-                        <CardContent >
-                          <Typography gutterBottom variant="h5" component="h2">
-                            {movie.title}
-                          </Typography>
-                          <Typography variant="body2" color="textSecondary" component="p">
-                            {movie.overview}
-                          </Typography>
+
+                          <CardMedia
+                            className={classes.media}
+                            image={movie.posterPath}
+                            title="moviePoster"
+                          />
+
+                        <CardContent className={classes.cardContent}>
+
+                            <Typography gutterBottom variant="h6" component="h2">
+                              {movie.title}
+                            </Typography>
+
                         </CardContent>
                       </CardActionArea>
                     </Link>
@@ -168,7 +162,9 @@ class Movies extends React.Component{
               ))}
             </GridList>
             </div>
-
+/*<Typography variant="body2" color="textSecondary" component="p">
+                              {movie.overview}
+                            </Typography>*/
             /*<Grid container spacing={1}>
 
               <Grid container item xs={12} spacing={3}>
