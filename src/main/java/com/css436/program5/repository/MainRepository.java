@@ -30,11 +30,7 @@ public class MainRepository {
     public List<Movie> getMovies(){
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
         List<Movie> movies = mapper.scan(Movie.class, scanExpression);
-        List<Movie> movies2 = new ArrayList<Movie>();
-        movies2.addAll(movies);
-        movies2.addAll(movies);
-        movies2.addAll(movies2);
-        return movies2;
+        return movies;
     }
 
     public Movie getMovieByName(String name) {

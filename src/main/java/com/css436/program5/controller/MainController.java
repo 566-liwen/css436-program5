@@ -1,6 +1,8 @@
 package com.css436.program5.controller;
 
 import com.css436.program5.model.Movie;
+import com.css436.program5.model.MoviesAndGenres;
+import com.css436.program5.model.MoviesAndGenres;
 import com.css436.program5.model.NytReview;
 import com.css436.program5.model.Person;
 import com.css436.program5.service.MainService;
@@ -21,10 +23,11 @@ public class MainController {
     @Autowired
     private MainService service;
 
-    @GetMapping
-    public ResponseEntity<List<Movie>> getMovies() {
+    @GetMapping(value = "genres/{name}")
+    public ResponseEntity<MoviesAndGenres> getMovies(@PathVariable String name) {
         List<Movie> movies = service.getMovies();
-        return new ResponseEntity<>(movies, HttpStatus.OK);
+        MoviesAndGenres moviesByGenre = service.getMoviesByGenre(movies, name);
+        return new ResponseEntity<>(moviesByGenre, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{name}")

@@ -56,6 +56,24 @@ public class MainService {
         return movies;
     }
 
+    public MoviesAndGenres getMoviesByGenre(List<Movie> movies, String genre) {
+        Set<String> genres = new HashSet<>();
+        List<Movie> subMovies = new ArrayList<>();
+        for(Movie movie : movies) {
+            for(String item : movie.getGenres()) {
+                genres.add(item);
+                if(item.toLowerCase().equals(genre)) {
+                    subMovies.add(movie);
+                }
+            }
+        }
+        genres.add("All");
+        if(subMovies.isEmpty()) {
+            return new MoviesAndGenres(movies, genres);
+        }
+        return new MoviesAndGenres(subMovies, genres);
+    }
+
     public Movie getMovieByName(String name) {
         //logic
         name = name.replace("%3A", ":");
