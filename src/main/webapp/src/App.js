@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Movies from "./components/movies";
 import Movie from "./components/movie";
+import Api from "./components/api";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,6 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import HomeIcon from "@material-ui/icons/Home";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import Button from "@material-ui/core/Button";
 import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,6 +21,7 @@ const useStyles = makeStyles(theme => ({
   menuButton: {
     marginRight: theme.spacing(2)
   },
+  button: {},
   title: {
     flexGrow: 1
   },
@@ -34,6 +37,11 @@ function App() {
   const handleHome = event => {
     window.location.href = "/";
   };
+
+  const handleApi = event => {
+    window.location.href = "/api";
+  };
+
   return (
     <React.Fragment>
       <AppBar position="static">
@@ -50,6 +58,14 @@ function App() {
           <Typography variant="h6" className={classes.title}>
             2020 TOP40 Movies
           </Typography>
+          <Button
+            variant="contained"
+            color="default"
+            className={classes.button}
+            onClick={handleApi}
+          >
+            API
+          </Button>
         </Toolbar>
       </AppBar>
       <Router>
@@ -58,6 +74,7 @@ function App() {
             <Movies />
           </Route>
           <Route path="/movies/:name" exact component={Movie} />
+          <Route path="/api" exact component={Api} />
         </Switch>
       </Router>
       <div className={classes.footer}>

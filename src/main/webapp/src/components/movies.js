@@ -76,7 +76,7 @@ const styles = theme => ({
   },
   text: {
     marginTop: "50px",
-    marginBottom: "100px",
+    marginBottom: "80px",
     textAlign: "center"
   },
   text2: {
@@ -150,6 +150,9 @@ class Movies extends React.Component {
           </Typography>
           <Typography variant="h5" component="h5" className={classes.text3}>
             Here are the 40 top-rated movies in 2020 in case you missed them.
+          </Typography>
+          <Typography variant="h5" component="h5" className={classes.text3}>
+            Explore, share, and have fun!
           </Typography>
         </div>
         <div className={classes.genres}>
