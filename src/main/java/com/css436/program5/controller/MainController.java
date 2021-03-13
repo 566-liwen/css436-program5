@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@CrossOrigin(origins = "http://ec2-52-42-101-9.us-west-2.compute.amazonaws.com:5000")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://ec2-52-42-101-9.us-west-2.compute.amazonaws.com:5000")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/movies")
 public class MainController {
 
